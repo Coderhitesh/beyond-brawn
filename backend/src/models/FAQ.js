@@ -1,0 +1,8 @@
+const { Schema, model } = require('mongoose');
+module.exports = model(
+  'FAQ',
+  new Schema(
+    { question: { type: String, required: true, trim: true }, answer: { type: String, required: true }, category: { type: String, default: 'General', trim: true }, sortOrder: { type: Number, default: 0 }, isActive: { type: Boolean, default: true } },
+    { timestamps: true }
+  )
+);
