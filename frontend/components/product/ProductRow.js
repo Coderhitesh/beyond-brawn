@@ -28,7 +28,7 @@ export default function ProductRow({ title, products = [], isFirst, href, hrefLa
             </button>
           </div>
         </div>
-        <ul ref={ref} className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 sm:-mx-6 sm:gap-6 sm:px-6 lg:mx-0 lg:px-0">
+        <ul ref={ref} className="scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto sm:gap-6">
           {products.map((p) => (
             <li key={p._id} className="w-[62%] shrink-0 snap-start sm:w-[38%] md:w-[30%] lg:w-[calc(25%-18px)]">
               <ProductCard product={p} />
