@@ -1,4 +1,4 @@
-export const API_URL = (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+export const API_URL = (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'https://api.beyondbrawn.store').replace(/\/$/, '');
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');
 export const SITE_NAME = 'Beyond Brawn';
 
