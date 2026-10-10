@@ -25,8 +25,8 @@ export default async function HomePage() {
     <>
       <Hero hero={hero} banner={(home.heroBanners || [])[0]} />
       <ShopByGoal />
-      <FeaturedCategories categories={home.categories} />
-      <ProductRow title="Best sellers" products={home.bestSellers} href="/shop?bestSeller=1&sort=best-selling" />
+      {/* <FeaturedCategories categories={home.categories} /> */}
+      <ProductRow title="Best sellers" products={home.bestSellers} isFirst href="/shop?bestSeller=1&sort=best-selling" />
       <ProductRow title="New arrivals" products={home.newArrivals} href="/shop?newArrival=1&sort=newest" />
       <PromoBanner promo={promo} banner={(home.promoBanners || [])[0]} />
       <WhyUs />

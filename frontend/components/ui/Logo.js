@@ -4,7 +4,7 @@ import Link from 'next/link';
  * Renders the uploaded logo when one is set in Admin > Settings > General.
  * Until then it falls back to a type-set wordmark so nothing looks broken.
  */
-export default function Logo({ src, dark = false, className = '', height = 36, href = '/' }) {
+export default function Logo({ src, dark = false, className = '', height = 74, href = '/' }) {
   const content = src ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img src={src} alt="Beyond Brawn" height={height} style={{ height, width: 'auto' }} />

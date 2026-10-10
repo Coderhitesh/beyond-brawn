@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "main": "src/server.js",
-  "engines": { "node": ">=18.17" },
+  "engines": {
+    "node": ">=18.17"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "seed": "node src/seed/seed.js",
-    "seed:fresh": "node src/seed/seed.js --fresh"
+    "seed:fresh": "node src/seed/seed.js --fresh",
+    "seed:products": "node src/seed/products-import.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -23,7 +26,7 @@
     "helmet": "^8.0.0",
     "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.3",
+    "mongoose": "^8.24.5",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
@@ -32,5 +35,7 @@
     "sanitize-html": "^2.13.1",
     "zod": "^3.23.8"
   },
-  "devDependencies": { "nodemon": "^3.1.7" }
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
 }

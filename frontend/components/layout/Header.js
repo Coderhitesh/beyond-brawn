@@ -86,7 +86,7 @@ export default function Header({ categories = [], logoUrl }) {
 
   return (
     <header className="sticky top-0 z-50 border-b-2 border-black bg-white">
-      <div className="container-site flex h-16 items-center gap-2 lg:h-[72px] lg:gap-8">
+      <div className="container-site flex h-20 items-center gap-2 lg:h-[90px] lg:gap-8">
         <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open menu" className="-ml-2 flex size-11 cursor-pointer items-center justify-center lg:hidden">
           <Menu className="size-6" />
         </button>

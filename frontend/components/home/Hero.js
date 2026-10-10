@@ -19,7 +19,7 @@ export default function Hero({ hero, banner }) {
       {image && <Img src={image} alt="" fill priority sizes="100vw" className="object-cover opacity-45" />}
       <div className="container-site relative grid items-end gap-10 py-14 sm:py-20 lg:grid-cols-[1.25fr_1fr] lg:py-24">
         <div>
-          <h1 className="display text-[clamp(4rem,13vw,10.5rem)] leading-[0.82]">{headline}</h1>
+          <h1 className="display text-[clamp(4rem,13vw,8.5rem)] leading-[0.82]">{headline}</h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/85 sm:text-xl">{sub}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href={primary.href} className="btn btn-lime h-14 px-9 text-xl">
