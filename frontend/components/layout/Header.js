@@ -49,7 +49,9 @@ export default function Header({ categories = [], logoUrl }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const megaRef = useRef(null);
+  const headerRef = useRef(null);
   const closeTimer = useRef(null);
+  const [megaMax, setMegaMax] = useState('calc(100dvh - 140px)');
 
   // Any navigation closes whatever is open.
   useEffect(() => {
@@ -57,6 +59,22 @@ export default function Header({ categories = [], logoUrl }) {
     setMobileOpen(false);
     setSearchOpen(false);
   }, [pathname]);
+
+  // The menu panel is capped to the space left under the header so every category can be scrolled to.
+  useEffect(() => {
+    if (!megaOpen) return undefined;
+    const fit = () => {
+      const bottom = headerRef.current ? headerRef.current.getBoundingClientRect().bottom : 140;
+      setMegaMax(`${Math.max(240, window.innerHeight - Math.max(0, bottom))}px`);
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('scroll', fit, { passive: true });
+    return () => {
+      window.removeEventListener('resize', fit);
+      window.removeEventListener('scroll', fit);
+    };
+  }, [megaOpen]);
 
   useEffect(() => {
     if (!megaOpen) return undefined;
@@ -85,31 +103,35 @@ export default function Header({ categories = [], logoUrl }) {
   const clickMega = () => setMegaOpen((o) => (hovering.current ? true : !o));
 
   return (
-    <header className="sticky top-0 z-50 border-b-2 border-black bg-white">
-      <div className="container-site flex h-20 items-center gap-2 lg:h-[90px] lg:gap-8">
+    <header ref={headerRef} className="sticky top-0 z-50 border-b-2 border-black bg-white">
+      <div className="container-site flex h-20 items-center gap-2 lg:h-[90px] lg:gap-4 xl:gap-8">
         <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open menu" className="-ml-2 flex size-11 cursor-pointer items-center justify-center lg:hidden">
           <Menu className="size-6" />
         </button>
         <Logo src={logoUrl} className="mr-auto lg:mr-0" />
 
-        <nav aria-label="Main" className="hidden flex-1 items-center gap-1 lg:flex" ref={megaRef}>
+        <nav aria-label="Main" className="hidden min-w-0 flex-1 items-center gap-0.5 lg:flex xl:gap-1" ref={megaRef}>
           {NAV.map((item) =>
             item.mega ? (
               <div key={item.label} onMouseEnter={hoverOpen} onMouseLeave={hoverClose}>
-                <button type="button" aria-expanded={megaOpen} aria-controls="mega-menu" onClick={clickMega} className="flex h-[72px] cursor-pointer items-center gap-1 px-3 text-[15px] font-semibold hover:text-lime-deep">
+                <button type="button" aria-expanded={megaOpen} aria-controls="mega-menu" onClick={clickMega} className="flex h-[72px] cursor-pointer items-center gap-1 whitespace-nowrap px-2 text-[14px] font-semibold hover:text-lime-deep xl:px-3 xl:text-[15px]">
                   {item.label}
                   <ChevronDown className={`size-4 transition-transform ${megaOpen ? 'rotate-180' : ''}`} aria-hidden />
                 </button>
                 {megaOpen && (
-                  <div id="mega-menu" className="absolute inset-x-0 top-full border-y-2 border-black bg-white shadow-xl">
-                    <div className="container-site grid grid-cols-5 gap-8 py-8">
+                  <div
+                    id="mega-menu"
+                    style={{ maxHeight: megaMax }}
+                    className="absolute inset-x-0 top-full overflow-y-auto overscroll-contain border-y-2 border-black bg-white shadow-xl"
+                  >
+                    <div className="container-site grid grid-cols-3 gap-x-8 gap-y-10 py-8 xl:grid-cols-4 2xl:grid-cols-5">
                       {categories.map((cat) => (
-                        <div key={cat._id}>
-                          <Link href={`/category/${cat.slug}`} className="block border-b-[5px] border-black pb-2 font-display text-2xl font-black uppercase leading-none hover:border-lime">
+                        <div key={cat._id} className="min-w-0">
+                          <Link href={`/category/${cat.slug}`} className="block break-words border-b-[5px] border-black pb-2 font-display text-xl font-black uppercase leading-tight hover:border-lime xl:text-2xl xl:leading-none">
                             {cat.name}
                           </Link>
                           <ul className="mt-3 space-y-1">
-                            {cat.subCategories.map((sub) => (
+                            {(cat.subCategories || []).map((sub) => (
                               <li key={sub._id}>
                                 <Link href={`/category/${cat.slug}?subcategory=${sub.slug}`} className="block border-b border-line py-1.5 text-[15px] hover:border-black hover:font-semibold">
                                   {sub.name}
@@ -120,11 +142,16 @@ export default function Header({ categories = [], logoUrl }) {
                         </div>
                       ))}
                     </div>
+                    <div className="container-site border-t border-line py-4">
+                      <Link href="/shop" className="text-sm font-bold underline underline-offset-4 hover:text-lime-deep">
+                        View all products
+                      </Link>
+                    </div>
                   </div>
                 )}
               </div>
             ) : (
-              <Link key={item.label} href={item.href} className="flex h-[72px] items-center px-3 text-[15px] font-semibold hover:text-lime-deep">
+              <Link key={item.label} href={item.href} className="flex h-[72px] items-center whitespace-nowrap px-2 text-[14px] font-semibold hover:text-lime-deep xl:px-3 xl:text-[15px]">
                 {item.label}
               </Link>
             )

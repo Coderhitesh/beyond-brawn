@@ -70,8 +70,14 @@
   .prose-bb a { @apply underline underline-offset-4; }
   .prose-bb img { @apply my-6 h-auto max-w-full; }
   .prose-bb blockquote { @apply my-6 border-l-4 border-lime pl-4 text-xl font-medium; }
-  .prose-bb table { @apply my-6 w-full border-collapse text-sm; }
-  .prose-bb th, .prose-bb td { @apply border border-line px-3 py-2 text-left; }
+  .prose-bb table { @apply my-6 block w-full overflow-x-auto border-collapse text-sm sm:table; }
+  .prose-bb th, .prose-bb td { @apply border border-line px-3 py-2 text-left align-top; }
+  .prose-bb th { @apply bg-bone font-semibold; }
+  .prose-bb h4 { @apply mt-6 mb-2 text-base font-bold uppercase tracking-wide; }
+  .prose-bb hr { @apply my-8 border-t-2 border-black; }
+  .prose-bb figure { @apply my-6; }
+  .prose-bb figcaption { @apply mt-2 text-sm text-mute; }
+  .prose-bb ul ul { @apply list-[circle]; }
 }
 
 @utility scrollbar-none {
@@ -116,4 +122,13 @@
   .rich ul { @apply mb-2 list-disc pl-5; }
   .rich ol { @apply mb-2 list-decimal pl-5; }
   .rich a { @apply underline; }
+  .rich h4 { @apply mt-2 mb-1 text-sm font-bold uppercase tracking-wide; }
+  .rich blockquote { @apply my-3 border-l-4 border-lime bg-bone/60 py-1 pl-3 italic; }
+  .rich img { @apply my-2 h-auto max-w-full; }
+  .rich hr { @apply my-4 border-t-2 border-black; }
+  .rich table { @apply my-3 w-full border-collapse text-sm; }
+  .rich th, .rich td { @apply min-w-16 border border-line px-2 py-1.5 text-left align-top; }
+  .rich th { @apply bg-bone font-semibold; }
+  .rich ul ul { @apply list-[circle]; }
+  .rich:empty::before { content: attr(data-placeholder); @apply pointer-events-none text-mute/70; }
 }

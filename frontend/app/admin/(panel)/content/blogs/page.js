@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import ResourceManager from '@/components/admin/ResourceManager';
 import { SEO_FIELDS } from '@/components/admin/FormFields';
 import { ActiveBadge } from '@/components/admin/ui';
@@ -17,7 +18,7 @@ const fields = [
   ...SEO_FIELDS,
 ];
 const columns = [
-  { key: 'title', label: 'Title', render: (r) => <span className="font-semibold">{r.title}</span> },
+  { key: 'title', label: 'Title', render: (r) => <Link href={`/admin/content/blogs/${r._id}`} className="font-semibold hover:underline">{r.title}</Link> },
   { key: 'category', label: 'Category', render: (r) => (r.category ? r.category.name : '') },
   { key: 'publishedAt', label: 'Published', render: (r) => (r.publishedAt ? formatDate(r.publishedAt) : '') },
   { key: 'isPublished', label: 'Status', render: (r) => <ActiveBadge on={r.isPublished} yes="Published" no="Draft" /> },
@@ -28,6 +29,8 @@ export default function Page() {
     <ResourceManager
       title="Blog" crumbs={[{ label: 'Content' }, { label: 'Blog' }]} endpoint="/blogs" perm="content.manage" singular="article" width="max-w-3xl" columns={columns} fields={fields}
       defaults={{ author: 'Team Beyond Brawn', isPublished: false }}
+      addHref="/admin/content/blogs/new"
+      editHref={(r) => `/admin/content/blogs/${r._id}`}
       filters={[{ key: 'isPublished', label: 'Any status', options: [{ value: 'true', label: 'Published' }, { value: 'false', label: 'Draft' }] }]}
       extraActions={(r) => (r.isPublished ? <a href={`/blog/${r.slug}`} target="_blank" rel="noopener noreferrer" className="px-2 text-[13px] font-semibold underline">View</a> : null)}
     />

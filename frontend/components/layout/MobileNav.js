@@ -29,9 +29,9 @@ export default function MobileNav({ open, onClose, categories, nav, user, wishli
             const isOpen = expanded === cat._id;
             return (
               <li key={cat._id} className="border-b border-line">
-                <button type="button" aria-expanded={isOpen} onClick={() => setExpanded(isOpen ? null : cat._id)} className="flex w-full cursor-pointer items-center justify-between px-5 py-4 font-display text-2xl font-black uppercase leading-none">
+                <button type="button" aria-expanded={isOpen} onClick={() => setExpanded(isOpen ? null : cat._id)} className="flex w-full cursor-pointer items-center justify-between gap-3 px-5 py-4 text-left font-display text-2xl font-black uppercase leading-none">
                   {cat.name}
-                  <ChevronDown className={`size-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden />
+                  <ChevronDown className={`size-5 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden />
                 </button>
                 {isOpen && (
                   <ul className="bg-bone px-5 pb-3">
@@ -40,7 +40,7 @@ export default function MobileNav({ open, onClose, categories, nav, user, wishli
                         All {cat.name.toLowerCase()}
                       </Link>
                     </li>
-                    {cat.subCategories.map((sub) => (
+                    {(cat.subCategories || []).map((sub) => (
                       <li key={sub._id}>
                         <Link href={`/category/${cat.slug}?subcategory=${sub.slug}`} className="block py-2.5">
                           {sub.name}

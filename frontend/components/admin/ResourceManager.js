@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
 import { useAdmin } from '@/context/AdminAuthContext';
@@ -16,7 +17,7 @@ import { Btn, Confirm, DataTable, PageTitle, SearchBox, Select } from './ui';
  * Config-driven list + create / edit drawer + delete for simple resources.
  * One component runs categories, brands, coupons, banners, FAQ, blog, pages and more.
  */
-export default function ResourceManager({ title, text, crumbs, endpoint, perm, readPerms, columns, fields, defaults = {}, filters = [], searchable = true, singular = 'item', width = 'max-w-2xl', limit = 20, describe = (row) => row.name || row.title || row.code || row.question, extraActions }) {
+export default function ResourceManager({ title, text, crumbs, endpoint, perm, readPerms, columns, fields, defaults = {}, filters = [], searchable = true, singular = 'item', width = 'max-w-2xl', limit = 20, describe = (row) => row.name || row.title || row.code || row.question, extraActions, addHref, editHref }) {
   const toast = useToast();
   const { can } = useAdmin();
   const canManage = can(perm);
@@ -79,9 +80,15 @@ export default function ResourceManager({ title, text, crumbs, endpoint, perm, r
           {extraActions && extraActions(row)}
           {canManage && (
             <>
-              <button type="button" onClick={() => open(row)} aria-label={`Edit ${describe(row)}`} title="Edit" className="flex size-8 cursor-pointer items-center justify-center hover:bg-bone">
-                <Pencil className="size-4" />
-              </button>
+              {editHref ? (
+                <Link href={editHref(row)} aria-label={`Edit ${describe(row)}`} title="Edit" className="flex size-8 cursor-pointer items-center justify-center hover:bg-bone">
+                  <Pencil className="size-4" />
+                </Link>
+              ) : (
+                <button type="button" onClick={() => open(row)} aria-label={`Edit ${describe(row)}`} title="Edit" className="flex size-8 cursor-pointer items-center justify-center hover:bg-bone">
+                  <Pencil className="size-4" />
+                </button>
+              )}
               <button type="button" onClick={() => setRemoving(row)} aria-label={`Delete ${describe(row)}`} title="Delete" className="flex size-8 cursor-pointer items-center justify-center text-mute hover:text-danger">
                 <Trash2 className="size-4" />
               </button>
@@ -95,12 +102,18 @@ export default function ResourceManager({ title, text, crumbs, endpoint, perm, r
   return (
     <Guard perms={readPerms || [perm]}>
       <PageTitle title={title} text={text} crumbs={crumbs}>
-        {canManage && (
-          <Btn variant="lime" onClick={() => open(null)}>
-            <Plus className="size-4" aria-hidden />
-            Add {singular}
-          </Btn>
-        )}
+        {canManage &&
+          (addHref ? (
+            <Link href={addHref} className="abtn abtn-lime">
+              <Plus className="size-4" aria-hidden />
+              Add {singular}
+            </Link>
+          ) : (
+            <Btn variant="lime" onClick={() => open(null)}>
+              <Plus className="size-4" aria-hidden />
+              Add {singular}
+            </Btn>
+          ))}
       </PageTitle>
       {(searchable || filters.length > 0) && (
         <div className="mb-3 flex flex-wrap gap-2">
