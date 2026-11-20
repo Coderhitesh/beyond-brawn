@@ -11,7 +11,8 @@
     "start": "node src/server.js",
     "seed": "node src/seed/seed.js",
     "seed:fresh": "node src/seed/seed.js --fresh",
-    "seed:products": "node src/seed/products-import.js"
+    "seed:products": "node src/seed/products-import.js",
+    "seed:seo": "node src/seed/seo-meta.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -3,8 +3,9 @@ import Link from 'next/link';
 import AuthShell from '@/components/account/AuthShell';
 import { LoginForm } from '@/components/account/AuthForms';
 import { getSettings } from '@/lib/server-api';
+import { staticMetadata } from '@/lib/seo-pages';
 
-export const metadata = { title: 'Log in', robots: { index: false } };
+export const metadata = staticMetadata('/login');
 
 export default async function Page() {
   const settings = await getSettings();

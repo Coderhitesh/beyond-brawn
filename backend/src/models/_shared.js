@@ -1,7 +1,7 @@
 const { Schema } = require('mongoose');
 
 const seoSchema = new Schema(
-  { title: { type: String, trim: true, maxlength: 160 }, description: { type: String, trim: true, maxlength: 320 }, keywords: { type: String, trim: true, maxlength: 320 } },
+  { title: { type: String, trim: true, maxlength: 160 }, description: { type: String, trim: true, maxlength: 320 }, keywords: { type: String, trim: true, maxlength: 320 }, robots: { type: String, trim: true, maxlength: 40 } },
   { _id: false }
 );
 const imageSchema = new Schema({ url: { type: String, required: true }, publicId: String, alt: String }, { _id: false });

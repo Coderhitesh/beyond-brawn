@@ -15,6 +15,6 @@ export default async function sitemap() {
     ...data.products.map((p) => url(`/products/${p.slug}`, p.updatedAt, 'daily', 0.8)),
     url('/blog', null, 'weekly', 0.6),
     ...data.blogs.map((b) => url(`/blog/${b.slug}`, b.updatedAt, 'monthly', 0.5)),
-    ...['/about', '/contact', '/faq', '/track-order', ...POLICY_LINKS.map((l) => l.href)].map((p) => url(p, null, 'monthly', 0.3)),
+    ...['/about', '/contact', '/faq', ...POLICY_LINKS.map((l) => l.href)].map((p) => url(p, null, 'monthly', 0.3)),
   ];
 }

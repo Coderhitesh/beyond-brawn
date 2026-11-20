@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import PageHeader from '@/components/ui/PageHeader';
 import { apiGet } from '@/lib/server-api';
-import { buildMetadata } from '@/lib/seo';
+import { buildMetadata, seoTitle } from '@/lib/seo';
+import { pageSeo } from '@/lib/seo-pages';
 import { formatDate } from '@/utils/format';
 
 const getPage = (slug) => apiGet(`/pages/${slug}`, { revalidate: 300, tags: [`page-${slug}`] });
@@ -9,8 +10,18 @@ const getPage = (slug) => apiGet(`/pages/${slug}`, { revalidate: 300, tags: [`pa
 export async function cmsMetadata(slug, fallbackTitle) {
   const res = await getPage(slug);
   const page = res && res.data.page;
-  const seo = (page && page.seo) || {};
-  return buildMetadata({ title: (page && page.title) || fallbackTitle, description: seo.description || `${(page && page.title) || fallbackTitle} for Beyond Brawn.`, path: `/${slug === 'about' ? 'about' : slug}` });
+  // Admin-saved SEO first, then the meta sheet (lib/seo-pages.js), then the page title.
+  const db = (page && page.seo) || {};
+  const sheet = pageSeo(`/${slug}`);
+  const pick = (k) => db[k] || sheet[k];
+  const name = (page && page.title) || fallbackTitle;
+  return buildMetadata({
+    title: seoTitle({ title: pick('title') }, name),
+    description: pick('description') || `${name} for Beyond Brawn.`,
+    keywords: pick('keywords'),
+    robots: pick('robots'),
+    path: `/${slug}`,
+  });
 }
 
 // Policy and info pages are edited in Admin > Content > Pages and rendered here.

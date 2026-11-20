@@ -2,9 +2,9 @@ import Link from 'next/link';
 import PageHeader from '@/components/ui/PageHeader';
 import ContactForm from '@/components/layout/ContactForm';
 import { getSettings } from '@/lib/server-api';
-import { buildMetadata } from '@/lib/seo';
+import { staticMetadata } from '@/lib/seo-pages';
 
-export const metadata = buildMetadata({ title: 'Contact us', description: 'Questions about an order or a product? Write to Beyond Brawn support. We reply within one working day.', path: '/contact' });
+export const metadata = staticMetadata('/contact');
 
 export default async function ContactPage() {
   const { contact = {} } = await getSettings();

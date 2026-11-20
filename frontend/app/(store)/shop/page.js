@@ -1,6 +1,7 @@
 import PageHeader from '@/components/ui/PageHeader';
 import ProductListing, { fetchListing } from '@/components/product/ProductListing';
-import { buildMetadata } from '@/lib/seo';
+import { buildMetadata, seoTitle } from '@/lib/seo';
+import { pageSeo } from '@/lib/seo-pages';
 import { GOALS } from '@/lib/config';
 
 function heading(sp) {
@@ -13,11 +14,36 @@ function heading(sp) {
   return { title: 'All products', text: 'Protein, performance, wellness and gear. Filter to find your fit.' };
 }
 
+// Collection / goal views of /shop that have their own SEO (meta sheet) and their own canonical URL.
+const COLLECTIONS = [
+  { param: 'bestSeller', key: 'shop:bestSeller' },
+  { param: 'newArrival', key: 'shop:newArrival' },
+  { param: 'offers', key: 'shop:offers' },
+  { param: 'featured', key: 'shop:featured' },
+];
+function collectionOf(sp) {
+  if (sp.goal && GOALS.some((g) => g.slug === sp.goal)) return { key: `shop:goal:${sp.goal}`, path: `/shop?goal=${sp.goal}`, params: ['goal'] };
+  const c = COLLECTIONS.find((x) => sp[x.param]);
+  if (c) return { key: c.key, path: `/shop?${c.param}=1`, params: [c.param] };
+  if (sp.tag === 'stack') return { key: 'shop:stack', path: '/shop?tag=stack', params: ['tag'] };
+  return { key: '/shop', path: '/shop', params: [] };
+}
+
 export async function generateMetadata({ searchParams }) {
   const sp = await searchParams;
   const h = heading(sp);
-  const filtered = Object.keys(sp).some((k) => !['bestSeller', 'newArrival', 'offers', 'featured', 'goal'].includes(k));
-  return buildMetadata({ title: h.title === 'All products' ? 'Shop all supplements' : h.title, description: `${h.text} Shop authentic Beyond Brawn sports nutrition with fast delivery across India.`, path: '/shop', noindex: filtered });
+  const c = collectionOf(sp);
+  const m = pageSeo(c.key);
+  // Sorting does not change what the page is; any other filter/page param = thin duplicate, keep it out of search.
+  const filtered = Object.keys(sp).some((k) => k !== 'sort' && !c.params.includes(k));
+  return buildMetadata({
+    title: seoTitle(m, h.title === 'All products' ? 'Shop all supplements' : h.title),
+    description: m.description || `${h.text} Shop authentic Beyond Brawn sports nutrition with fast delivery across India.`,
+    keywords: m.keywords,
+    robots: m.robots,
+    path: c.path,
+    noindex: filtered,
+  });
 }
 
 export default async function ShopPage({ searchParams }) {

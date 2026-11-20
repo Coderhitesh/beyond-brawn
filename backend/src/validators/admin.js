@@ -2,7 +2,7 @@ const { z, objectId, email, password } = require('./common');
 const { ORDER_STATUSES, GOALS } = require('../models/_shared');
 
 const money = z.coerce.number().min(0).max(1e7);
-const seo = z.object({ title: z.string().max(160).optional(), description: z.string().max(320).optional(), keywords: z.string().max(320).optional() }).partial().optional();
+const seo = z.object({ title: z.string().max(160).optional(), description: z.string().max(320).optional(), keywords: z.string().max(320).optional(), robots: z.string().max(40).optional() }).partial().optional();
 const image = z.object({ url: z.string().min(1), publicId: z.string().optional().nullable(), alt: z.string().optional().nullable() });
 
 const variant = z.object({

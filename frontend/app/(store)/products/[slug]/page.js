@@ -24,6 +24,7 @@ export async function generateMetadata({ params }) {
     keywords: seo.keywords || (product.tags || []).join(', '),
     path: `/products/${product.slug}`,
     image: product.thumbnail,
+    robots: seo.robots,
   });
 }
 

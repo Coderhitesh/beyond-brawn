@@ -2,15 +2,26 @@ import { SITE_URL, SITE_NAME } from './config';
 
 export const abs = (path = '') => (/^https?:\/\//.test(path) ? path : `${SITE_URL}${path.startsWith('/') ? '' : '/'}${path}`);
 
-export function buildMetadata({ title, description, path = '/', image, type = 'website', noindex = false, keywords } = {}) {
+// "noindex, follow" style string (from admin SEO / meta sheet) -> Next.js robots object.
+export function parseRobots(value) {
+  const v = String(value || '').toLowerCase();
+  if (!v) return undefined;
+  return { index: !v.includes('noindex'), follow: !v.includes('nofollow') };
+}
+
+// A saved SEO title is already complete ("... | Beyond Brawn"), so it must skip the layout title template.
+export const seoTitle = (seo, fallback) => (seo && seo.title ? { absolute: seo.title } : fallback);
+
+export function buildMetadata({ title, description, path = '/', image, type = 'website', noindex = false, keywords, robots } = {}) {
   const images = image ? [{ url: abs(image) }] : undefined;
   const text = title && typeof title === 'object' ? title.absolute : title;
+  const parsed = parseRobots(robots);
   return {
     title,
     description,
     keywords,
     alternates: { canonical: abs(path) },
-    robots: noindex ? { index: false, follow: true } : undefined,
+    robots: noindex ? { index: false, follow: parsed ? parsed.follow : true } : parsed && !(parsed.index && parsed.follow) ? parsed : undefined,
     openGraph: { title: text, description, url: abs(path), siteName: SITE_NAME, type, locale: 'en_IN', images },
     twitter: { card: image ? 'summary_large_image' : 'summary', title: text, description, images: image ? [abs(image)] : undefined },
   };

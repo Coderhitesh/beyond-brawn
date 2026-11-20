@@ -27,7 +27,7 @@ const EMPTY = {
   hasVariants: false, variantOptions: [],
   benefits: '', ingredients: '', directions: '', warnings: '', specifications: [], faqs: [],
   nutritionFacts: { servingSize: '', servingsPerContainer: '', rows: [] },
-  seo: { title: '', description: '', keywords: '' },
+  seo: { title: '', description: '', keywords: '', robots: '' },
 };
 
 const idOf = (v) => (v && typeof v === 'object' ? v._id : v) || '';

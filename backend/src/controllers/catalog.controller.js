@@ -74,12 +74,13 @@ exports.home = asyncHandler(async (req, res) => {
   });
 });
 
-// Slugs for sitemap.xml
+// Slugs for sitemap.xml (pages set to noindex in SEO are left out)
+const indexable = { 'seo.robots': { $not: /noindex/i } };
 exports.sitemap = asyncHandler(async (req, res) => {
   const [products, categories, blogs] = await Promise.all([
-    Product.find({ isActive: true }).select('slug updatedAt').lean(),
-    Category.find({ isActive: true }).select('slug updatedAt').lean(),
-    Blog.find({ isPublished: true }).select('slug updatedAt').lean(),
+    Product.find({ isActive: true, ...indexable }).select('slug updatedAt').lean(),
+    Category.find({ isActive: true, ...indexable }).select('slug updatedAt').lean(),
+    Blog.find({ isPublished: true, ...indexable }).select('slug updatedAt').lean(),
   ]);
   ok(res, { products, categories, blogs });
 });

@@ -2,9 +2,10 @@ import Link from 'next/link';
 import PageHeader from '@/components/ui/PageHeader';
 import JsonLd from '@/components/ui/JsonLd';
 import { apiGet } from '@/lib/server-api';
-import { buildMetadata, faqLd } from '@/lib/seo';
+import { faqLd } from '@/lib/seo';
+import { staticMetadata } from '@/lib/seo-pages';
 
-export const metadata = buildMetadata({ title: 'Help and FAQ', description: 'Answers about delivery, payments, returns, refunds and Beyond Brawn products.', path: '/faq' });
+export const metadata = staticMetadata('/faq');
 
 export default async function FaqPage() {
   const res = await apiGet('/faqs', { revalidate: 300 });

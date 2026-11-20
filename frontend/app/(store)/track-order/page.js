@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import PageHeader from '@/components/ui/PageHeader';
 import TrackOrder from '@/components/account/TrackOrder';
-import { buildMetadata } from '@/lib/seo';
+import { staticMetadata } from '@/lib/seo-pages';
 
-export const metadata = buildMetadata({ title: 'Track your order', description: 'Enter your Beyond Brawn order number and email to see where your order is.', path: '/track-order' });
+export const metadata = staticMetadata('/track-order');
 
 export default function TrackOrderPage() {
   return (

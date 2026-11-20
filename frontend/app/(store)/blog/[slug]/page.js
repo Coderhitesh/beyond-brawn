@@ -5,7 +5,7 @@ import JsonLd from '@/components/ui/JsonLd';
 import Img from '@/components/ui/Img';
 import BlogCard from '@/components/home/BlogCard';
 import { apiGet } from '@/lib/server-api';
-import { articleLd, buildMetadata } from '@/lib/seo';
+import { articleLd, buildMetadata, seoTitle } from '@/lib/seo';
 import { formatDate } from '@/utils/format';
 
 const getBlog = (slug) => apiGet(`/blogs/${encodeURIComponent(slug)}`, { revalidate: 120 });
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
   if (!res) return { title: 'Article not found' };
   const { blog } = res.data;
   const seo = blog.seo || {};
-  return buildMetadata({ title: seo.title || blog.title, description: seo.description || blog.excerpt, keywords: seo.keywords || (blog.tags || []).join(', '), path: `/blog/${blog.slug}`, image: blog.coverImage, type: 'article' });
+  return buildMetadata({ title: seoTitle(seo, blog.title), robots: seo.robots, description: seo.description || blog.excerpt, keywords: seo.keywords || (blog.tags || []).join(', '), path: `/blog/${blog.slug}`, image: blog.coverImage, type: 'article' });
 }
 
 export default async function BlogDetailPage({ params }) {

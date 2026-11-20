@@ -3,11 +3,13 @@ import PageHeader from '@/components/ui/PageHeader';
 import BlogCard from '@/components/home/BlogCard';
 import Pagination from '@/components/product/Pagination';
 import { apiGet } from '@/lib/server-api';
-import { buildMetadata } from '@/lib/seo';
+import { buildMetadata, seoTitle } from '@/lib/seo';
+import { pageSeo } from '@/lib/seo-pages';
 
 export async function generateMetadata({ searchParams }) {
   const sp = await searchParams;
-  return buildMetadata({ title: 'Training and nutrition blog', description: 'Practical, evidence-based articles on protein, creatine, training and recovery from the Beyond Brawn team.', path: '/blog', noindex: Boolean(sp.page || sp.category) });
+  const m = pageSeo('/blog');
+  return buildMetadata({ title: seoTitle(m, 'Training and nutrition blog'), description: m.description, keywords: m.keywords, robots: m.robots, path: '/blog', noindex: Boolean(sp.page || sp.category) });
 }
 
 export default async function BlogPage({ searchParams }) {

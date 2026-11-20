@@ -224,9 +224,17 @@ export default function FormFields({ fields, form, onChange, errors = {} }) {
   );
 }
 
+export const ROBOTS_OPTIONS = [
+  { value: '', label: 'Default (index, follow)' },
+  { value: 'index, follow', label: 'index, follow' },
+  { value: 'noindex, follow', label: 'noindex, follow' },
+  { value: 'noindex, nofollow', label: 'noindex, nofollow' },
+];
+
 export const SEO_FIELDS = [
   { type: 'heading', label: 'Search engine listing' },
   { name: 'seo.title', label: 'SEO title', maxLength: 160, hint: 'Shown as the blue link in Google. Leave empty to use the name.', full: true },
   { name: 'seo.description', label: 'SEO description', type: 'textarea', rows: 2, maxLength: 320, hint: 'One or two sentences. Aim for 150 characters.' },
   { name: 'seo.keywords', label: 'SEO keywords', full: true, hint: 'Comma separated' },
+  { name: 'seo.robots', label: 'Search indexing', type: 'select', options: ROBOTS_OPTIONS, hint: 'Noindex keeps the page out of Google and the sitemap.' },
 ];

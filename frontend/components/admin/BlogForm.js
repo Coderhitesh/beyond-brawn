@@ -7,14 +7,14 @@ import { useAdmin } from '@/context/AdminAuthContext';
 import { useToast } from '@/context/ToastContext';
 import { fieldErrors } from '@/lib/api';
 import { adminApi } from '@/services/admin';
-import { clearOptionCache, useOptions } from './FormFields';
+import { ROBOTS_OPTIONS, clearOptionCache, useOptions } from './FormFields';
 import { SingleImage } from './ImageUpload';
 import RichText from './RichText';
 import { Btn, Card, Confirm, ErrorBox, Loading, PageTitle, Toggle } from './ui';
 
 const EMPTY = {
   title: '', slug: '', excerpt: '', content: '', coverImage: '', category: '', author: 'Team Beyond Brawn', tags: '', isPublished: false,
-  seo: { title: '', description: '', keywords: '' },
+  seo: { title: '', description: '', keywords: '', robots: '' },
 };
 
 const slugify = (s) =>
@@ -54,7 +54,7 @@ function toApi(f) {
     author: f.author.trim() || 'Team Beyond Brawn',
     tags: f.tags.split(',').map((t) => t.trim()).filter(Boolean),
     isPublished: f.isPublished,
-    seo: { title: f.seo.title.trim(), description: f.seo.description.trim(), keywords: f.seo.keywords.trim() },
+    seo: { title: f.seo.title.trim(), description: f.seo.description.trim(), keywords: f.seo.keywords.trim(), robots: f.seo.robots || '' },
   };
   if (f.slug.trim()) body.slug = slugify(f.slug);
   return body;
@@ -301,6 +301,18 @@ export default function BlogForm({ id }) {
                 </label>
                 <input id="seo-keys" className="ainput" value={form.seo.keywords} onChange={(e) => setSeo({ keywords: e.target.value })} placeholder="Comma separated" disabled={!canManage} />
                 {err('seo.keywords')}
+              </div>
+              <div>
+                <label htmlFor="seo-robots" className="alabel">
+                  Search indexing
+                </label>
+                <select id="seo-robots" className="ainput cursor-pointer" value={form.seo.robots || ''} onChange={(e) => setSeo({ robots: e.target.value })} disabled={!canManage}>
+                  {ROBOTS_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </Card>

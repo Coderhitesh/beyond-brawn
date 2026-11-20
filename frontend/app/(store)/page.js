@@ -9,12 +9,15 @@ import BlogCard from '@/components/home/BlogCard';
 import Newsletter from '@/components/home/Newsletter';
 import ProductRow from '@/components/product/ProductRow';
 import { apiGet, getSettings } from '@/lib/server-api';
+import { buildMetadata } from '@/lib/seo';
+import { pageSeo } from '@/lib/seo-pages';
 
 export const revalidate = 60;
 
 export async function generateMetadata() {
   const { seo } = await getSettings();
-  return { title: { absolute: seo.defaultTitle }, description: seo.defaultDescription, alternates: { canonical: '/' } };
+  const page = pageSeo('home');
+  return buildMetadata({ title: { absolute: seo.defaultTitle || page.title }, description: seo.defaultDescription || page.description, keywords: seo.keywords || page.keywords, path: '/', image: seo.ogImage });
 }
 
 export default async function HomePage() {
